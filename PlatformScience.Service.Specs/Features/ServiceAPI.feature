@@ -57,7 +57,7 @@ Examples:
 | dimensionX | dimensionY | startX | startY | instructions             | endX | endY | patchesCount |
 | 5          | 5          | 0      | 0      | NNNNESSSSENNNNESSSSENNNN | 4    | 4    | 25           |
 
-@RestartService
+@NoServiceRestart
 Scenario Outline: Hoover can not go off grid
 Given I set the room size to 5 by 5
 And the starting coordinates to <startX> and <startY>
@@ -167,3 +167,24 @@ Then I should receive a BadRequest result
 Examples:
 | dimensionX | dimensionY | startX | startY | instructions |
 | 5          | 5          | 0      | 0      | S            |
+
+@NoServiceRestart
+Scenario Outline: I can create and traverse grids of varying sizes
+Given I set the room size to <dimensionX> by <dimensionY>
+And the starting coordinates to 0 and 0
+And I set dirt patches at
+| patchX | patchY |
+| 0      | 0      |
+And I create instructions to traverse the entire grid from <dimensionX> and <dimensionY>
+When I call the cleaning-sessions endpoint
+Then I should get the expected end coordinates from traversing a <dimensionX> by <dimensionY> grid
+Examples: 
+| dimensionX | dimensionY |
+| 9          | 7          |
+| 25         | 32         |
+| 1          | 5          |
+| 5          | 1          |
+| 250        | 250        |
+| 4          | 4          |
+| 5          | 4          |
+| 3000       | 23         |

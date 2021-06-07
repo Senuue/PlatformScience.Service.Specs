@@ -52,13 +52,16 @@ namespace PlatformScience.Service.Specs.Steps
         public void WhenICallTheCleaning_SessionsEndpoint()
         {
             response = RestTester.GetApiWebResponse(Verb.Post, "http://localhost:8080/v1/cleaning-sessions", requestModel);
+            if (response.StatusCode.IsSuccess())
+            {
+                responseModel = response.GetResponse<ResponseModel>();
+            }
         }
 
         [Then(@"I should get the following ending coords (.*) and (.*)")]
         public void ThenIShouldGetTheFollowingEndingCoordsAnd(int endX, int endY)
         {
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
-            responseModel = response.GetResponse<ResponseModel>();
             Assert.That(responseModel.Coords[0], Is.EqualTo(endX));
             Assert.That(responseModel.Coords[1], Is.EqualTo(endY));
         }
@@ -75,5 +78,39 @@ namespace PlatformScience.Service.Specs.Steps
             Assert.That(response.StatusCode, Is.EqualTo(status));
         }
 
+        [Given(@"I create instructions to traverse the entire grid from (.*) and (.*)")]
+        public void GivenICreateInstructionsToTraverseTheEntireGridFromAnd(int dimensionX, int dimensionY)
+        {
+            var instructions = TraverseEntireGridInstructions(dimensionX, dimensionY);
+            requestModel.Instructions = instructions;
+        }
+
+        [Then(@"I should get the expected end coordinates from traversing a (.*) by (.*) grid")]
+        public void ThenIShouldGetTheExpectedEndCoordinatesFromTraversingAByGrid(int dimensionX, int dimensionY)
+        {
+            var expectedX = dimensionX -1;
+            var expectedY = dimensionX % 2 == 0 ? 0 : dimensionY -1;
+            
+            Assert.That(responseModel.Coords[0], Is.EqualTo(expectedX));
+            Assert.That(responseModel.Coords[1], Is.EqualTo(expectedY));
+        }
+
+        private string TraverseEntireGridInstructions(int dimensionX, int dimensionY)
+        {
+            var instructions = "";
+            var isSouth = false;
+
+            for(var i = 0; i < dimensionX; i++)
+            {
+                for(var j = 0; j < dimensionY; j++)
+                {
+                    instructions += isSouth ? "S" : "N";
+                }
+                instructions += "E";
+                isSouth = !isSouth;
+            }
+
+            return instructions;
+        }
     }
 }

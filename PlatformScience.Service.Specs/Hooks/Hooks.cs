@@ -45,15 +45,22 @@ namespace PlatformScience.Service.Specs.Hooks
         [AfterScenario("RestartService")]
         public void AfterScenario()
         {
-            process.Kill();
+            KillProcess();
         }
         
         [AfterTestRun]
         public static void AfterTestRun()
         {
-            process.Kill();
+            KillProcess();
         }
 
+        private static void KillProcess()
+        {
+            if(process != null)
+            {
+                process.Kill();
+            }
+        }
         private bool IsServiceRunning()
         {
             try

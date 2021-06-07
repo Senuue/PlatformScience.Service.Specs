@@ -301,7 +301,7 @@ testRunner.And(string.Format("I should have {0} patches", patchesCount), ((strin
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Hoover can not go off grid")]
-        [NUnit.Framework.CategoryAttribute("RestartService")]
+        [NUnit.Framework.CategoryAttribute("NoServiceRestart")]
         [NUnit.Framework.TestCaseAttribute("0", "0", "S", "0", "0", null)]
         [NUnit.Framework.TestCaseAttribute("0", "0", "W", "0", "0", null)]
         [NUnit.Framework.TestCaseAttribute("0", "1", "W", "0", "1", null)]
@@ -325,7 +325,7 @@ testRunner.And(string.Format("I should have {0} patches", patchesCount), ((strin
         public virtual void HooverCanNotGoOffGrid(string startX, string startY, string instructions, string endX, string endY, string[] exampleTags)
         {
             string[] @__tags = new string[] {
-                    "RestartService"};
+                    "NoServiceRestart"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -729,6 +729,78 @@ testRunner.When("I call the cleaning-sessions endpoint", ((string)(null)), ((Tec
 #line hidden
 #line 166
 testRunner.Then("I should receive a BadRequest result", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("I can create and traverse grids of varying sizes")]
+        [NUnit.Framework.CategoryAttribute("NoServiceRestart")]
+        [NUnit.Framework.TestCaseAttribute("9", "7", null)]
+        [NUnit.Framework.TestCaseAttribute("25", "32", null)]
+        [NUnit.Framework.TestCaseAttribute("1", "5", null)]
+        [NUnit.Framework.TestCaseAttribute("5", "1", null)]
+        [NUnit.Framework.TestCaseAttribute("250", "250", null)]
+        [NUnit.Framework.TestCaseAttribute("4", "4", null)]
+        [NUnit.Framework.TestCaseAttribute("5", "4", null)]
+        [NUnit.Framework.TestCaseAttribute("3000", "23", null)]
+        public virtual void ICanCreateAndTraverseGridsOfVaryingSizes(string dimensionX, string dimensionY, string[] exampleTags)
+        {
+            string[] @__tags = new string[] {
+                    "NoServiceRestart"};
+            if ((exampleTags != null))
+            {
+                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
+            }
+            string[] tagsOfScenario = @__tags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("dimensionX", dimensionX);
+            argumentsOfScenario.Add("dimensionY", dimensionY);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("I can create and traverse grids of varying sizes", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 172
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 173
+testRunner.Given(string.Format("I set the room size to {0} by {1}", dimensionX, dimensionY), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 174
+testRunner.And("the starting coordinates to 0 and 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                            "patchX",
+                            "patchY"});
+                table9.AddRow(new string[] {
+                            "0",
+                            "0"});
+#line 175
+testRunner.And("I set dirt patches at", ((string)(null)), table9, "And ");
+#line hidden
+#line 178
+testRunner.And(string.Format("I create instructions to traverse the entire grid from {0} and {1}", dimensionX, dimensionY), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 179
+testRunner.When("I call the cleaning-sessions endpoint", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 180
+testRunner.Then(string.Format("I should get the expected end coordinates from traversing a {0} by {1} grid", dimensionX, dimensionY), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
